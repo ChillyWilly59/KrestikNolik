@@ -19,6 +19,8 @@ namespace Client {
             Leopotam.Ecs.UnityIntegration.EcsSystemsObserver.Create (_systems);
 #endif
             var gameState = new GameState();
+            SceneData.UI.GameHUD.SetTurn(gameState.CurrentType);
+
             
             _systems
                 // register your systems here, for example:
@@ -29,6 +31,8 @@ namespace Client {
                 .Add (new AnalyzerClickSystem())
                 .Add(new CreateTakenViewSystem())
                 .Add(new CheckWinSystem())
+                .Add(new WinSystem())
+                .Add(new DrawSystem())
                 
                 // register one-frame components (order is important), for example:
                 .OneFrame<UpdateCameraSystem> ()
@@ -52,6 +56,21 @@ namespace Client {
                 _systems = null;
                 _world.Destroy ();
                 _world = null;
+            }
+        }
+    }
+
+    internal class DrawSystem : IEcsRunSystem 
+    {
+        private EcsFilter<Cell>.Exclude<Taken> _freeCells;
+        private EcsFilter<Winner> _winner;
+        private SceneData _sceneData;
+        
+        public void Run()
+        {
+            if (_freeCells.IsEmpty() && _winner.IsEmpty())
+            {
+                _sceneData.UI.LoserScreen.Show(true);
             }
         }
     }

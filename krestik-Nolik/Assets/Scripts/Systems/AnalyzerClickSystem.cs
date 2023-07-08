@@ -5,6 +5,7 @@ namespace Client {
     {
         private EcsFilter<Cell, Clicked>.Exclude<Taken> _filter;
         private GameState _gameState;
+        private SceneData _sceneData;
 
         public void Run()
         {
@@ -15,6 +16,8 @@ namespace Client {
                 ecsEntity.Get<CheckWinEvent>();
 
                 _gameState.CurrentType = _gameState.CurrentType == SingType.Ring ? SingType.Cross : SingType.Ring;
+
+                _sceneData.UI.GameHUD.SetTurn(_gameState.CurrentType);
             }
         }
     }

@@ -5,5 +5,6 @@ namespace Client {
     {
         public Transform CameraTransform;
         public Camera Camera;
+        public UI UI;
     }
 }
